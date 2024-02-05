@@ -1,5 +1,6 @@
 import styles from "../../styles/Upload.module.css"
 import Head from "next/head"
+import ImageUploadForm from "../../components/ImageUploadForm/ImageUploadForm"
 
 export default function Upload({ params }) {
 
@@ -9,7 +10,7 @@ export default function Upload({ params }) {
       <title>Upload</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <p>Download-copy</p>
+    <ImageUploadForm/>
   </div>
   )
 }
