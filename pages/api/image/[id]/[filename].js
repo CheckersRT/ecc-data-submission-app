@@ -1,5 +1,6 @@
 import connectMongo from "../../../../db/connect";
 import { Image } from "../../../../db/models/Image";
+import sharp from "sharp"
 
 export default async function handler(
     request,
@@ -11,8 +12,12 @@ export default async function handler(
 
     const image = await Image.findById(id)
 
-    response.appendHeader('Content-Type', image.mimetype)
-    response.appendHeader('Content-Length', image.size)
+    const smallImageBuffer = await sharp(image.binaryData)
+    .resize({ width: 50 }) // Specify width for resizing
+    .toBuffer(); // Convert to buffer
 
-    response.status(200).send(image.binaryData)
+    response.appendHeader('Content-Type', image.mimetype)
+    response.appendHeader('Content-Length', smallImageBuffer.size)
+
+    response.status(200).send(smallImageBuffer)
 }
