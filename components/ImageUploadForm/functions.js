@@ -34,6 +34,8 @@ export async function onSubmit(event, fileData, trigger) {
     return;
   }
 
+  // api call that sends the fileData(image) to Google vision
+  // then sends the result to openAI
   const formElement = event.currentTarget;
   trigger(fileData);
   formElement.reset();
