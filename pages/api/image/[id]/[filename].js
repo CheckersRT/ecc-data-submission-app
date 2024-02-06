@@ -17,7 +17,7 @@ export default async function handler(
     .toBuffer(); // Convert to buffer
 
     response.appendHeader('Content-Type', image.mimetype)
-    response.appendHeader('Content-Length', smallImageBuffer.size)
+    response.appendHeader('Content-Length', image.size)
 
-    response.status(200).send(smallImageBuffer)
+    response.status(200).send(image.binaryData)
 }
