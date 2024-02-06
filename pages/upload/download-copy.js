@@ -1,8 +1,10 @@
 import styles from "../../styles/Upload.module.css"
 import Head from "next/head"
 import ImageUploadForm from "../../components/ImageUploadForm/ImageUploadForm"
+import ImageList from "../../components/ImageList/ImageList"
 
 export default function Upload({ params }) {
+
 
   return (
   <div className={styles.container}>
@@ -11,6 +13,7 @@ export default function Upload({ params }) {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <ImageUploadForm/>
+    <ImageList/>
   </div>
   )
 }
