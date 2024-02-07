@@ -3,12 +3,12 @@
 export default function ImageComponent({ image }) {
   return (
     <div>
-      <img
+      <Image
         src={image.src}
         alt="uploaded images"
-        // fill={true}
-        // width={150}
-        // height={150}
+        fill={true}
+        width={150}
+        height={150}
         // priority
       />
     </div>
