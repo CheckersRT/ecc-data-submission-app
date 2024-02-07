@@ -9,7 +9,7 @@ export default function ImageList() {
   return (
     <Container>
       {images && images.map((image) => (
-        <StyledImageComponent key={image._id} image={image}/>
+        <ImageComponent key={image._id} image={image}/>
       ))}
     </Container>
   );
@@ -19,10 +19,4 @@ const Container = styled.div`
   display: flex;
   justify-content: flex-start;
   gap: 10px;
-`
-
-const StyledImageComponent = styled(ImageComponent)`
-  width: 100px;
-  overflow: hidden;
-
 `
