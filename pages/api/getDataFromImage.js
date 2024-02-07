@@ -7,6 +7,8 @@ const openai = new OpenAI({
 export default async function handler(request, response) {
   try {
     const image = request.body.image;
+    
+    console.log("Received in request body: ", image)
 
     const bdata = image.binaryData.data;
     const base64String = Buffer.from(bdata).toString("base64");
@@ -24,12 +26,11 @@ export default async function handler(request, response) {
       response.status(200).json({data: submissionData})
     }
 
-    // const submissionData = await callOpenAIAPI(extractedText);
   } catch (error) {
     console.log("Error from api getDataFromImage: ", error);
+    response.json({error: error})
   }
 
-  return;
 }
 
 async function callGoogleVisionAPI(image) {
@@ -78,8 +79,16 @@ async function callGoogleVisionAPI(image) {
 async function callOpenAIAPI(text) {
   console.log("OPEN AI CALL");
   const prompt = `
-  Extract the composer, song title and music publicher from this text: ${text}. 
-  Return a JSON object with the keys songTitle, composer, and musicPublisher. Fill in their respective values."
+  Extract the title of the song/piece of music, the composer or arranger, the title of the book (if the music is from a book of songs), the print publisher (if the song is part of a book), the music publisher (usually found in the copyright line at the bottom of the first page of music), the website (if there is one), and the ISBN (found only on books) from this text: ${text}. 
+  Return a JSON object with the following keys:
+  titleOfWork,
+  composerArranger,
+  titleOfBook,
+  printPublisher,
+  musicPublisher,
+  website,
+  ISBN,
+  Fill in their respective values."
   }`;
 
   try {
@@ -94,5 +103,14 @@ async function callOpenAIAPI(text) {
     return completion
   } catch (error) {
     console.error("Error: ", error);
+  }
+}
+
+
+export const config = {
+  api: {
+      bodyParser: {
+          sizeLimit: '4mb' // Set desired value here
+      }
   }
 }
