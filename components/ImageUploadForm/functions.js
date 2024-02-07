@@ -34,7 +34,23 @@ export async function onSubmit(event, fileData, trigger) {
     return;
   }
 
-  
+  try {
+    const response = await fetch("/api/getDataFromImage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: fileData }),
+    });
+
+    if (response.ok) {
+      const data = (await response).json();
+      console.log("data: ", data);
+    }
+  } catch (error) {
+    console.error("Error: ", error);
+  }
+
   // api call that sends the fileData(image) to Google vision
   // then sends the result to openAI
   const formElement = event.currentTarget;
