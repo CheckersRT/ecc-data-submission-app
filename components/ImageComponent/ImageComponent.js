@@ -11,7 +11,7 @@ export default function ImageComponent({ image }) {
         loader={imageLoader}
         src={image.src}
         alt="uploaded images"
-        fill={true}
+        // fill={true}
         width={150}
         height={150}
         // priority
