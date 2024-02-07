@@ -12,10 +12,6 @@ export default async function handler(
 
     const image = await Image.findById(id)
 
-    const smallImageBuffer = await sharp(image.binaryData)
-    .resize({ width: 50 }) // Specify width for resizing
-    .toBuffer(); // Convert to buffer
-
     response.appendHeader('Content-Type', image.mimetype)
     response.appendHeader('Content-Length', image.size)
 

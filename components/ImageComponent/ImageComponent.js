@@ -1,12 +1,12 @@
 import Image from "next/image";
 
-export default function ImageComponent({ image }) {
+export default function ImageComponent({ image, className }) {
   const imageLoader = ({ src, width }) => {
     return `${src}?w=${width}`;
   };
 
   return (
-    <div>
+    <div className={className}>
       <Image
         loader={imageLoader}
         src={image.src}
