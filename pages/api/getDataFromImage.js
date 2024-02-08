@@ -1,36 +1,51 @@
 import OpenAI from "openai";
+import {Formidable} from "formidable"
 
 const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY
 });
 
 export default async function handler(request, response) {
+
   try {
-    const image = request.body.image;
+    const form = new Formidable()
+  
+    form.parse(request, (error, fields, files) => {
+
+      console.log("files", files)
+      const image = files.file
+
+      const base64string = Buffer.from(await image.arrayBuffer()),
+    })
     
-    console.log("Received in request body: ", image)
-
-    const bdata = image.binaryData.data;
-    const base64String = Buffer.from(bdata).toString("base64");
-
-    const extractedText = await callGoogleVisionAPI(base64String);
-
-    console.log("Extracted Text: ", extractedText);
-
-    const submissionData = await callOpenAIAPI(extractedText);
-
-    if (!extractedText) {
-      response.json({ message: "Something failed" });
-    }
-    if(submissionData) {
-      response.status(200).json({data: submissionData})
-    }
 
   } catch (error) {
-    console.log("Error from api getDataFromImage: ", error);
-    response.json({error: error})
+    console.error("Error: ", error)
   }
+  // try {
 
+  //       const extractedText = await callGoogleVisionAPI(base64String);
+  //       console.log("Extracted Text: ", extractedText);
+
+  //       const submissionData = await callOpenAIAPI(extractedText);
+
+  //       if (!extractedText) {
+  //         response.status(500).json({ error: "Something failed" });
+  //         return
+  //       }
+  //       if(submissionData) {
+  //         response.status(200).json({data: submissionData})
+  //         return
+  //       }
+
+  //     console.log("after parse")
+  //     response.status(500).json({error: "somethings gone wrong"})
+  //     // If the incoming request is not FormData, handle it accordingly
+  //     response.status(400).json({ error: 'Unsupported content type' });
+  // } catch (error) {
+  //   console.log("Error from api getDataFromImage: ", error);
+  //   response.status(500).json({error: error});
+  // }
 }
 
 async function callGoogleVisionAPI(image) {
@@ -109,8 +124,9 @@ async function callOpenAIAPI(text) {
 
 export const config = {
   api: {
-      bodyParser: {
-          sizeLimit: '4mb' // Set desired value here
-      }
+      bodyParser: false
+      // {
+      //     sizeLimit: '4mb' // Set desired value here
+      // }
   }
 }
