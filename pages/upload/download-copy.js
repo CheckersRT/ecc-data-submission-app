@@ -16,7 +16,7 @@ export default function Upload({ params }) {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <ImageUploadForm setData={setSheetMusicData}/>
-    <ImageList/>
+    {sheetMusicData && <ImageList/>}
     <Results data={sheetMusicData}/>
   </div>
   )
