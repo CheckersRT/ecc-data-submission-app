@@ -25,7 +25,8 @@ export const DbService = {
         await newImage.save()
         return createFrontendImageFromDbImage(newImage)
     },
-    async createData({type, isOwnArrangement, titleOfWork, composerArranger, titleOfBook, printPublisher, musicPublisher, website, ISBN, numCopies}) {
+    async createData({type, isOwnArrangement, titleOfWork, composerArranger, titleOfBook, printPublisher, musicPublisher, website, ISBN, numCopies, images}) {
+        console.log("images in creatData: ", images)
         await connectMongo();
         const newData = new Data({
             type,
@@ -38,8 +39,9 @@ export const DbService = {
             website,
             ISBN,
             numCopies,
+            images,
         })
         await newData.save()
-
+        return newData
     }
 }

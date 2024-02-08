@@ -16,28 +16,82 @@ export async function onChange(event, setFileData) {
   const file = event.currentTarget.files[0];
 
   if (file) {
-    console.log(event);
-    console.log(file);
-    setFileData({
-      //converts image to base64
-      binaryData: Buffer.from(await file.arrayBuffer()),
-      originalFilename: file.name,
-      size: file.size,
-      mimetype: file.type,
-    });
+    console.log("File: ", file);
+
+    // using formData keeps file sizes managable. A JSON string adds 33%. 
+    const formData = new FormData();
+    formData.append("file", file)
+
+    for (const value of formData.values()) { console.log(value); }
+
+    setFileData(formData);
   }
 }
 
-export async function onSubmit(event, fileData, trigger) {
+export async function onSubmit(event, fileData, trigger, setData) {
   event.preventDefault();
   if (!fileData) {
     return;
   }
-
-  
-  // api call that sends the fileData(image) to Google vision
-  // then sends the result to openAI
   const formElement = event.currentTarget;
-  trigger(fileData);
-  formElement.reset();
+  console.log("fileData onSubmit: ", fileData);
+
+  try {
+    const response = await fetch("/api/getDataFromImage", {
+      method: "POST",
+      body: fileData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("data: ", data.data);
+      setData(data.data);
+      trigger(fileData);
+      formElement.reset();
+    }
+  } catch (error) {
+    console.error("Error: ", error);
+  }
 }
+
+
+async function uploadToCloudinary(image) {
+  const cloudName = "dm1n4kfee";
+  const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+
+  const formData = new FormData();
+  formData.append("image", image.binaryData);
+  formData.append("upload_preset", "y0myraqm");
+
+  const options = {
+    use_filename: true,
+    unique_filename: false,
+    overwrite: true,
+    resource_type: "image",
+  };
+
+  try {
+    const result = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+
+    console.log("Result from cloudinary: ", result)
+  } catch (error) {
+    console.error("Error from uploadToCloudinary", error);
+    return "No such file or directory";
+  }
+
+  return result;
+}
+
+
+
+      // {
+      //converts image to base64
+      // binaryData: Buffer.from(await file.arrayBuffer()),
+      // formData: formData,
+      // originalFilename: file.name,
+      // size: file.size,
+      // mimetype: file.type,
+    // }

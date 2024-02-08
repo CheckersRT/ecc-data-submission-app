@@ -1,20 +1,24 @@
 import Image from "next/image";
 
-export default function ImageComponent({ image, className }) {
+export default function ImageComponent({ image }) {
   const imageLoader = ({ src, width }) => {
     return `${src}?w=${width}`;
   };
 
+  const imageStyle = {
+    objectFit: "contain"
+  }
+
   return (
-    <div className={className}>
+    <div>
       <Image
         loader={imageLoader}
         src={image.src}
         alt="uploaded images"
         // fill={true}
-        width={150}
+        width={100}
         height={150}
-        // priority
+        style={imageStyle}        // priority
       />
     </div>
   );

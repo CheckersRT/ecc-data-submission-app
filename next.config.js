@@ -1,5 +1,13 @@
 const nextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '4mb',
+    },
+  },
   reactStrictMode: true,
+  compiler: {
+    styledComponents: true,
+  },
   images: {
     remotePatterns: [
       {
