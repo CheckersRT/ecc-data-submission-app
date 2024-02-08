@@ -18,6 +18,7 @@ export async function onChange(event, setFileData) {
   if (file) {
     console.log("File: ", file);
 
+    // using formData keeps file sizes managable. A JSON string adds 33%. 
     const formData = new FormData();
     formData.append("file", file)
 
@@ -33,13 +34,8 @@ export async function onSubmit(event, fileData, trigger, setData) {
     return;
   }
   const formElement = event.currentTarget;
-
-  // const url = await uploadToCloudinary(fileData);
-
-  // const payloadSizeBytes = new TextEncoder().encode(JSON.stringify({ image: fileData })).length;
-  // console.log("Payload size (bytes):", payloadSizeBytes);
-
   console.log("fileData onSubmit: ", fileData);
+
   try {
     const response = await fetch("/api/getDataFromImage", {
       method: "POST",
@@ -50,7 +46,6 @@ export async function onSubmit(event, fileData, trigger, setData) {
       const data = await response.json();
       console.log("data: ", data.data);
       setData(data.data);
-      console.log(event);
       trigger(fileData);
       formElement.reset();
     }
