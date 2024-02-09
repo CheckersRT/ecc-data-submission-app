@@ -26,15 +26,14 @@ export async function onChange(event, setFileData) {
       console.log(value);
     }
 
-    setFileData({
-      formData: formData,
-      fileData: {
-        binaryData: Buffer.from(await file.arrayBuffer()),
-        originalFilename: file.name,
-        size: file.size,
-        mimetype: file.type,
-      },
-    });
+    setFileData(formData
+      // fileData: {
+      //   binaryData: Buffer.from(await file.arrayBuffer()),
+      //   originalFilename: file.name,
+      //   size: file.size,
+      //   mimetype: file.type,
+      // },
+    );
   }
 }
 
@@ -47,11 +46,11 @@ export async function onSubmit(event, fileData, trigger, setData) {
   console.log("fileData onSubmit: ", fileData);
 
   // setIsLoading("Saving images")
-  // const imageUrls = await uploadImagesToCloudinary(fileData.formData)
-  // setImageUrls(imageUrls)
+  // const saved = await uploadImagesToCloudinary(fileData)
+  // setIsLoading(saved)
 
   //setIsLoading("doing AI")
-  // const data = await getDataFromImages(fileData.formData)
+  // const data = await getDataFromImages(fileData)
   //setSubmissionData(data)
 
   try {
@@ -73,11 +72,26 @@ export async function onSubmit(event, fileData, trigger, setData) {
 }
 
 
-async function uploadImagesToCloudinary(images) {
+async function uploadImages(images) {
   try {
-    
+    const response = await fetch("/api/uploadImages", {
+      method: "POST",
+      body: images,
+    })
+
+    if(response.ok) {
+      return "Images saved"
+    }
     
   } catch (error) {
     console.error("Error: ", error)
+  }
+}
+
+async function getDataFromImages() {
+  try {
+    
+  } catch (error) {
+    
   }
 }
