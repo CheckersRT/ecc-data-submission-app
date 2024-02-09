@@ -3,6 +3,7 @@ import fs from "fs";
 import callGoogleVisionAPI from "./utils/callGoogleVisionAPI";
 import callOpenAIAPI from "./utils/callOpenAIAPI";
 import saveDataAndImagesInDb from "./utils/saveDataAndImagesInDb";
+import uploadToCloudinary from "./utils/uploadToCloudinary";
 
 export default async function handler(request, response) {
   try {
@@ -25,6 +26,11 @@ export default async function handler(request, response) {
         }
         // Convert the file content to a base64 string
         const base64string = fileContent.toString("base64");
+
+        // upload image strings to Cloudinary async (don't wait)
+        const imageURL = uploadToCloudinary(image[0].filepath)
+        console.log("result from cloudinary upload: ", imageURL)
+
         try {
 
           // send to google Vision for text extraction
@@ -41,17 +47,17 @@ export default async function handler(request, response) {
           if(!submissionData) {
             response.status(500).json({error: "Error analysing text"})
           }
-          const imageArray = []
+          // const imageArray = []
 
-          const imageData = createImageDbObject(image, base64string)
-          imageArray.push(imageData)
-          console.log("imageData", imageArray)
-          //save data and images in database
-          const saved = await saveDataAndImagesInDb(imageArray, submissionData)
+          // const imageData = createImageDbObject(image, base64string)
+          // imageArray.push(imageData)
+          // console.log("imageData", imageArray)
+          // //save data and images in database
+          // const dataDocument = await saveDataAndImagesInDb(imageArray, submissionData)
 
-          if(!saved) {
-            response.status(500).json({error: "Error saving data in database"})
-          }
+          // if(!dataDocument) {
+          //   response.status(500).json({error: "Error saving data in database"})
+          // }
 
           response.status(200).json({data: submissionData})
 

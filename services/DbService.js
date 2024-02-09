@@ -9,6 +9,8 @@ export const DbService = {
         await connectMongo()
 
         const images = (await Image.find()).map(image => createFrontendImageFromDbImage(image))
+        // const image = (await Image.findById())
+        // const imageUrl = [createFrontendImageFromDbImage(image)]
 
         return images
     },
