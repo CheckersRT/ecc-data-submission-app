@@ -1,0 +1,5 @@
+.imageContainer {
+    width: 100%; /* Adjust as needed */
+    height: auto; /* Adjust as needed */
+    object-fit: contain; /* Apply object fit to control how the image fills its container */
+  }

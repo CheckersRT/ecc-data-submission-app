@@ -18,7 +18,7 @@ export default async function uploadToCloudinary(images) {
   try {
     // Upload the track
     const result = await cloudinary.v2.uploader.upload(images, options);
-    console.log("Result from try catch: ", result);
+    console.log("Result cloudinary upload: ", result);
     return result;
   } catch (error) {
     console.error("Error from uploadToCloudinary", error);

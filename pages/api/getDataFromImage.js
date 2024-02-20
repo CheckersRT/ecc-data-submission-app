@@ -4,6 +4,8 @@ import callGoogleVisionAPI from "./utils/callGoogleVisionAPI";
 import callOpenAIAPI from "./utils/callOpenAIAPI";
 import saveDataAndImagesInDb from "./utils/saveDataAndImagesInDb";
 import uploadToCloudinary from "./utils/uploadToCloudinary";
+import {initialDataDbObject} from "./utils/initialDataDbObject"
+import updateDataAndImagesInDb from "./utils/updateDataAndImagesInDb"
 
 export default async function handler(request, response) {
   try {
@@ -27,45 +29,56 @@ export default async function handler(request, response) {
         // Convert the file content to a base64 string
         const base64string = fileContent.toString("base64");
 
-        // upload image strings to Cloudinary async (don't wait)
-        const imageURL = uploadToCloudinary(image[0].filepath)
-        console.log("result from cloudinary upload: ", imageURL)
-
         try {
 
-          // send to google Vision for text extraction
+          // create image and data doc in database immediately so something is saved
+          const initialImageDbObject = createImageDbObject(
+            image[0],
+            base64string,
+          );
+          console.log("initalImageDbObject: ", initialImageDbObject)
+          // perform initial save in Db, returns a promise which will await later
+          const initialDbSavePromise = saveDataAndImagesInDb([initialImageDbObject], initialDataDbObject)
+
+
+          // upload image strings to Cloudinary async, return promise (don't wait)
+          const imageDataPromise = uploadToCloudinary(image[0].filepath);
+
+          // send base64string to google Vision for text extraction
           const extractedText = await callGoogleVisionAPI(base64string);
-          
-          if(!extractedText) {
-            response.status(500).json({error: "Error extracting text"})
+
+          if (!extractedText) {
+            response.status(500).json({ error: "Error extracting text" });
           }
-          
-          // send to OpenAi to get data from text
+
+          // send extracted text to OpenAi to get data from text
           const submissionData = await callOpenAIAPI(extractedText);
           console.log("Submission data: ", submissionData);
 
-          if(!submissionData) {
-            response.status(500).json({error: "Error analysing text"})
+          if (!submissionData) {
+            response.status(500).json({ error: "Error analysing text" });
           }
-          // const imageArray = []
 
-          // const imageData = createImageDbObject(image, base64string)
-          // imageArray.push(imageData)
-          // console.log("imageData", imageArray)
-          // //save data and images in database
-          // const dataDocument = await saveDataAndImagesInDb(imageArray, submissionData)
+          // if uploadToCloudinary is complete...
+          const initialDbSave = await initialDbSavePromise
+          const imageData = await imageDataPromise;
 
-          // if(!dataDocument) {
-          //   response.status(500).json({error: "Error saving data in database"})
-          // }
+          const updatedDbSave = await updateDataAndImagesInDb(initialDbSave._id, submissionData, imageData.secure_url)
 
-          response.status(200).json({data: submissionData})
+          if (!updatedDbSave) {
+            response
+              .status(500)
+              .json({ error: "Error saving data in database" });
+          }
 
+          response
+            .status(200)
+            .json({ data: submissionData });
         } catch (error) {
-          console.error("Error calling Google Vision API:", error);
+          console.error("Error from getDataFromImage route:", error);
           response
             .status(500)
-            .json({ error: "Error calling Google Vision API" });
+            .json({ error: "Error from getDataFromImage route" });
           return;
         }
       });
@@ -81,15 +94,14 @@ export const config = {
   },
 };
 
-
-
 function createImageDbObject(file, base64string) {
-  console.log("Image file in createdb function", file)
-  const {originalFilename, size, mimetype} = file[0]
- return {
-  originalFilename,
-  size,
-  mimetype,
-  binaryData: base64string,
- }
+  // console.log("Image file in createdb function", file);
+  const { originalFilename, size, mimetype } = file;
+  return {
+    originalFilename,
+    size,
+    mimetype,
+    binaryData: base64string,
+    url: "test",
+  };
 }

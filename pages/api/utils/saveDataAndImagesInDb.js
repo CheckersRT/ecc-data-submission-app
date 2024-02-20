@@ -6,19 +6,17 @@ export default async function saveDataAndImagesInDb(images, data) {
     try {
         // Step 1: Save the images to the images collection
         const imagePromises = images.map(async (imageData) => {
-            const { originalFilename, size, mimetype, binaryData } = imageData;
-            const newImage = await createImage({ originalFilename, size, mimetype, binaryData });
+            const newImage = await createImage(imageData);
             return newImage._id; // Return the ID of the saved image
         });
 
         // Wait for all image creation promises to resolve
         const imageIds = await Promise.all(imagePromises);
-        console.log("imageids: ", imageIds)
 
         // Step 2: Create the data document and include the IDs of the linked images
         const newData = await createData({ ...data, images: imageIds });
 
-        console.log("newData doc: ", newData.images)
+        console.log("newData doc: ", newData)
         if (!newData) {
             throw new Error("Failed to create data document");
         }

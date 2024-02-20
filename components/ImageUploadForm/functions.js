@@ -56,14 +56,14 @@ export async function onSubmit(event, fileData, trigger, setData) {
   try {
     const response = await fetch("/api/getDataFromImage", {
       method: "POST",
-      body: fileData.formData,
+      body: fileData,
     });
 
     if (response.ok) {
       const data = await response.json();
-      console.log("data: ", data.data);
+      console.log("data: ", data.data, "doc: ", data.dbDoc);
       setData(data.data);
-      trigger(fileData.fileData);
+      // trigger(fileData);
       formElement.reset();
     }
   } catch (error) {
