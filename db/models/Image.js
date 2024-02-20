@@ -8,6 +8,7 @@ export const imageSchema = new Schema({
     mimetype: String,
     size: Number,
     binaryData: Buffer,
+    url: String,
     dataID: {type: Schema.Types.ObjectId, ref: "Image" },
 })
 

@@ -18,13 +18,22 @@ export async function onChange(event, setFileData) {
   if (file) {
     console.log("File: ", file);
 
-    // using formData keeps file sizes managable. A JSON string adds 33%. 
+    // using formData keeps file sizes managable. A JSON string adds 33%.
     const formData = new FormData();
-    formData.append("file", file)
+    formData.append("file", file);
 
-    for (const value of formData.values()) { console.log(value); }
+    for (const value of formData.values()) {
+      console.log(value);
+    }
 
-    setFileData(formData);
+    setFileData(formData
+      // fileData: {
+      //   binaryData: Buffer.from(await file.arrayBuffer()),
+      //   originalFilename: file.name,
+      //   size: file.size,
+      //   mimetype: file.type,
+      // },
+    );
   }
 }
 
@@ -36,6 +45,14 @@ export async function onSubmit(event, fileData, trigger, setData) {
   const formElement = event.currentTarget;
   console.log("fileData onSubmit: ", fileData);
 
+  // setIsLoading("Saving images")
+  // const saved = await uploadImagesToCloudinary(fileData)
+  // setIsLoading(saved)
+
+  //setIsLoading("doing AI")
+  // const data = await getDataFromImages(fileData)
+  //setSubmissionData(data)
+
   try {
     const response = await fetch("/api/getDataFromImage", {
       method: "POST",
@@ -44,9 +61,9 @@ export async function onSubmit(event, fileData, trigger, setData) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("data: ", data.data);
+      console.log("data: ", data.data, "doc: ", data.dbDoc);
       setData(data.data);
-      trigger(fileData);
+      // trigger(fileData);
       formElement.reset();
     }
   } catch (error) {
@@ -55,43 +72,26 @@ export async function onSubmit(event, fileData, trigger, setData) {
 }
 
 
-async function uploadToCloudinary(image) {
-  const cloudName = "dm1n4kfee";
-  const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-
-  const formData = new FormData();
-  formData.append("image", image.binaryData);
-  formData.append("upload_preset", "y0myraqm");
-
-  const options = {
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-    resource_type: "image",
-  };
-
+async function uploadImages(images) {
   try {
-    const result = await fetch(url, {
+    const response = await fetch("/api/uploadImages", {
       method: "POST",
-      body: formData,
-    });
+      body: images,
+    })
 
-    console.log("Result from cloudinary: ", result)
+    if(response.ok) {
+      return "Images saved"
+    }
+    
   } catch (error) {
-    console.error("Error from uploadToCloudinary", error);
-    return "No such file or directory";
+    console.error("Error: ", error)
   }
-
-  return result;
 }
 
-
-
-      // {
-      //converts image to base64
-      // binaryData: Buffer.from(await file.arrayBuffer()),
-      // formData: formData,
-      // originalFilename: file.name,
-      // size: file.size,
-      // mimetype: file.type,
-    // }
+async function getDataFromImages() {
+  try {
+    
+  } catch (error) {
+    
+  }
+}

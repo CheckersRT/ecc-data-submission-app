@@ -9,6 +9,7 @@ export default async function handler(request, response) {
       case "GET":
         try {
             const images = await getImages()
+            console.log("get in api index: ", images.map((image) => image.originalFilename))
             response.status(200).json(images)
         } catch (error) {
             console.log("Error from get request", error)
@@ -17,6 +18,7 @@ export default async function handler(request, response) {
 
     case "POST":
       const newData = await createImage(request.body.fileData);
+      console.log("newData:", newData)
       response.status(201).json(newData);
       break;
   }

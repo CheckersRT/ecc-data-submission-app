@@ -6,7 +6,7 @@ import { useState } from "react"
 import Results from "../../components/Results/Results"
 
 export default function Upload({ params }) {
-  const [sheetMusicData, setSheetMusicData] = useState({})
+  const [sheetMusicData, setSheetMusicData] = useState()
 
 
   return (
@@ -16,7 +16,7 @@ export default function Upload({ params }) {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <ImageUploadForm setData={setSheetMusicData}/>
-    {sheetMusicData && <ImageList/>}
+    <ImageList/>
     <Results data={sheetMusicData}/>
   </div>
   )
