@@ -37,7 +37,7 @@ export async function onChange(event, setFileData) {
   }
 }
 
-export async function onSubmit(event, fileData, trigger, setData) {
+export async function onSubmit(event, fileData, trigger, setData, setIsLoading) {
   event.preventDefault();
   if (!fileData) {
     return;
@@ -54,6 +54,7 @@ export async function onSubmit(event, fileData, trigger, setData) {
   //setSubmissionData(data)
 
   try {
+    setIsLoading(true)
     const response = await fetch("/api/getDataFromImage", {
       method: "POST",
       body: fileData,
@@ -63,6 +64,7 @@ export async function onSubmit(event, fileData, trigger, setData) {
       const data = await response.json();
       console.log("data: ", data.data, "doc: ", data.dbDoc);
       setData(data.data);
+      setIsLoading(false)
       // trigger(fileData);
       formElement.reset();
     }
@@ -71,27 +73,3 @@ export async function onSubmit(event, fileData, trigger, setData) {
   }
 }
 
-
-async function uploadImages(images) {
-  try {
-    const response = await fetch("/api/uploadImages", {
-      method: "POST",
-      body: images,
-    })
-
-    if(response.ok) {
-      return "Images saved"
-    }
-    
-  } catch (error) {
-    console.error("Error: ", error)
-  }
-}
-
-async function getDataFromImages() {
-  try {
-    
-  } catch (error) {
-    
-  }
-}

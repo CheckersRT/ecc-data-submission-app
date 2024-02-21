@@ -3,10 +3,11 @@ import Head from "next/head"
 import ImageUploadForm from "../../components/ImageUploadForm/ImageUploadForm"
 import ImageList from "../../components/ImageList/ImageList"
 import { useState } from "react"
-import Results from "../../components/Results/Results"
+import ResultsForm from "../../components/ResultsForm/ResultsForm"
 
 export default function Upload({ params }) {
   const [sheetMusicData, setSheetMusicData] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
 
   return (
@@ -15,9 +16,12 @@ export default function Upload({ params }) {
       <title>Upload</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <ImageUploadForm setData={setSheetMusicData}/>
+    <ImageUploadForm setData={setSheetMusicData} setIsLoading={setIsLoading}/>
     {/* <ImageList/> */}
-    <Results data={sheetMusicData}/>
+    {sheetMusicData ?
+    <ResultsForm data={sheetMusicData}/>
+     :
+     isLoading ? <p>...loading...</p> : null }
   </div>
   )
 }
