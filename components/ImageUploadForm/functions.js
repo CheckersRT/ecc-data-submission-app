@@ -26,18 +26,17 @@ export async function onChange(event, setFileData) {
       console.log(value);
     }
 
-    setFileData(formData
-      // fileData: {
-      //   binaryData: Buffer.from(await file.arrayBuffer()),
-      //   originalFilename: file.name,
-      //   size: file.size,
-      //   mimetype: file.type,
-      // },
-    );
+    setFileData(formData);
   }
 }
 
-export async function onSubmit(event, fileData, trigger, setData) {
+export async function onSubmit(
+  event,
+  fileData,
+  trigger,
+  setData,
+  setIsLoading
+) {
   event.preventDefault();
   if (!fileData) {
     return;
@@ -54,6 +53,7 @@ export async function onSubmit(event, fileData, trigger, setData) {
   //setSubmissionData(data)
 
   try {
+    setIsLoading(true);
     const response = await fetch("/api/getDataFromImage", {
       method: "POST",
       body: fileData,
@@ -61,37 +61,13 @@ export async function onSubmit(event, fileData, trigger, setData) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("data: ", data.data, "doc: ", data.dbDoc);
-      setData(data.data);
+      console.log("data: ", data.data, "doc: ", data.doc);
+      setData(data.doc);
+      setIsLoading(false);
       // trigger(fileData);
       formElement.reset();
     }
   } catch (error) {
     console.error("Error: ", error);
-  }
-}
-
-
-async function uploadImages(images) {
-  try {
-    const response = await fetch("/api/uploadImages", {
-      method: "POST",
-      body: images,
-    })
-
-    if(response.ok) {
-      return "Images saved"
-    }
-    
-  } catch (error) {
-    console.error("Error: ", error)
-  }
-}
-
-async function getDataFromImages() {
-  try {
-    
-  } catch (error) {
-    
   }
 }

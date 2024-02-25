@@ -73,7 +73,7 @@ export default async function handler(request, response) {
 
           response
             .status(200)
-            .json({ data: submissionData });
+            .json({ data: submissionData, doc: updatedDbSave });
         } catch (error) {
           console.error("Error from getDataFromImage route:", error);
           response

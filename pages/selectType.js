@@ -11,18 +11,18 @@ export default function SelectType({ params }) {
 
       <h2 className={styles.title}>What kind of sheet music do you have?</h2>
       <div className={styles.grid}>
-        <a href="/upload/printed-pub" className={styles.card}>
+        <a href="/upload/printedPublication" className={styles.card}>
           <h3>Print publication &rarr;</h3>
           <p>A printed book containing multiple pieces of music.</p>
         </a>
 
-        <a href="/upload/single-sheet" className={styles.card}>
+        <a href="/upload/singleSheet" className={styles.card}>
           <h3>Single sheet &rarr;</h3>
           <p>A single printed piece of sheet music.</p>
         </a>
 
         <a
-          href="/upload/download-copy"
+          href="/upload/downloadCopy"
           className={styles.card}
         >
           <h3>Download copy &rarr;</h3>
