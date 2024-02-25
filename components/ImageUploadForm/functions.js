@@ -26,18 +26,17 @@ export async function onChange(event, setFileData) {
       console.log(value);
     }
 
-    setFileData(formData
-      // fileData: {
-      //   binaryData: Buffer.from(await file.arrayBuffer()),
-      //   originalFilename: file.name,
-      //   size: file.size,
-      //   mimetype: file.type,
-      // },
-    );
+    setFileData(formData);
   }
 }
 
-export async function onSubmit(event, fileData, trigger, setData, setIsLoading) {
+export async function onSubmit(
+  event,
+  fileData,
+  trigger,
+  setData,
+  setIsLoading
+) {
   event.preventDefault();
   if (!fileData) {
     return;
@@ -54,7 +53,7 @@ export async function onSubmit(event, fileData, trigger, setData, setIsLoading) 
   //setSubmissionData(data)
 
   try {
-    setIsLoading(true)
+    setIsLoading(true);
     const response = await fetch("/api/getDataFromImage", {
       method: "POST",
       body: fileData,
@@ -62,9 +61,9 @@ export async function onSubmit(event, fileData, trigger, setData, setIsLoading) 
 
     if (response.ok) {
       const data = await response.json();
-      console.log("data: ", data.data, "doc: ", data.dbDoc);
-      setData(data.data);
-      setIsLoading(false)
+      console.log("data: ", data.data, "doc: ", data.doc);
+      setData(data.doc);
+      setIsLoading(false);
       // trigger(fileData);
       formElement.reset();
     }
@@ -72,4 +71,3 @@ export async function onSubmit(event, fileData, trigger, setData, setIsLoading) 
     console.error("Error: ", error);
   }
 }
-

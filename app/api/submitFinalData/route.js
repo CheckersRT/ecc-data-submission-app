@@ -1,28 +1,23 @@
-import { Formidable } from "formidable";
+import { DbService } from "../../../services/DbService";
+import { NextResponse } from "next/server";
 
-export async function POST(req, res) {
+export async function POST(request, response) {
+  const { updateData } = DbService;
 
-    const data = req.formData()
-    // const data = request.body
-    console.log("Request.formData(): ", data)
-    try {
-        const form = new Formidable();
-        const { fields, files } = await new Promise((resolve, reject) => {
-          form.parse(request, (error, fields, files) => {
-            if (error) {
-              reject(error);
-              return;
-            }
-            resolve({ fields, files });
-          });
-        });
-    
-        console.log("fields:", fields);
-        // Handle parsed fields and files as needed
-    
-        response.status(200).json({ success: true });
-      } catch (error) {
-        console.error("Error parsing FormData at submitFinalData:", error);
-        response.status(500).json({ error: "Error parsing FormData" });
-      }
+  try {
+    const formData = await request.formData();
+    console.log("Request.formData(): ", formData);
+
+    const data = Object.fromEntries(formData);
+    const documentId = data.id;
+
+    const updatedDoc = await updateData(documentId, data);
+
+    console.log("Document updated", updatedDoc)
+
+    return NextResponse.json({ success: true, doc: updatedDoc }, { status: 200 });
+  } catch (error) {
+    console.error("Error parsing FormData at submitFinalData:", error);
+    return NextResponse.json({ error: "Error parsing FormData" }, { status: 500 });
+  }
 }
