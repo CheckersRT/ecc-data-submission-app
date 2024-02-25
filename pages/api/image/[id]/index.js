@@ -15,5 +15,5 @@ export default async function handler(
     response.appendHeader('Content-Type', image.mimetype)
     response.appendHeader('Content-Length', image.size)
 
-    response.status(200).send(image.binaryData)
+    response.status(200).send(image)
 }

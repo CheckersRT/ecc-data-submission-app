@@ -17,6 +17,7 @@ export default async function handler(request, response) {
         response.status(500).json({ error: "Error parsing FormData" });
         return;
       }
+      console.log("files: ", files)
       const image = files.file;
 
       // Read the file

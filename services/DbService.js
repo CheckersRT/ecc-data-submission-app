@@ -29,7 +29,7 @@ export const DbService = {
 
     await newImage.save();
     console.log("Image doc saved in Db: ", newImage);
-    return createFrontendImageFromDbImage(newImage);
+    return newImage;
   },
   async createData({
     type,

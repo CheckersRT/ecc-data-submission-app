@@ -14,7 +14,7 @@ export default function ImageComponent({ image }) {
     <div className={styles.imageContainer}> {/* Apply styles to the container */}
       <Image
         loader={imageLoader}
-        src={image.src}
+        src={image.binaryData}
         alt="uploaded images"
         width={100}
         height={150}
