@@ -2,10 +2,11 @@ import useSWR from "swr";
 import ImageComponent from "../ImageComponent/ImageComponent";
 import styled from "styled-components"
 
-export default function ImageList({imageIDs}) {
-    const {data: images, error, isLoading} = useSWR("/api/image")
+export default function ImageList({images}) {
 
-    console.log(images, error, isLoading)
+    // console.log(images, error, isLoading)
+
+    console.log(images ? images : null)
   return (
     <Container>
       {images && images.map((image) => (

@@ -13,20 +13,17 @@ export async function uploadImage(url, { arg }) {
 }
 
 export async function onChange(event, setFileData) {
-  const file = event.currentTarget.files[0];
+  const files = event.currentTarget.files;
 
-  if (file) {
-    console.log("File: ", file);
+  if (files) {
+    console.log("Files: ", files);
 
     // using formData keeps file sizes managable. A JSON string adds 33%.
     const formData = new FormData();
-    formData.append("file", file);
-
-    for (const value of formData.values()) {
-      console.log(value);
+    for (let i = 0; i < files.length; i++) {
+        formData.append("file", files[i]);
     }
-
-    setFileData(formData);
+    setFileData(formData)
   }
 }
 
@@ -35,7 +32,8 @@ export async function onSubmit(
   fileData,
   trigger,
   setData,
-  setIsLoading
+  setIsLoading,
+  setImageIds,
 ) {
   event.preventDefault();
   if (!fileData) {
@@ -44,29 +42,40 @@ export async function onSubmit(
   const formElement = event.currentTarget;
   console.log("fileData onSubmit: ", fileData);
 
-  // setIsLoading("Saving images")
-  // const saved = await uploadImagesToCloudinary(fileData)
-  // setIsLoading(saved)
-
-  //setIsLoading("doing AI")
-  // const data = await getDataFromImages(fileData)
-  //setSubmissionData(data)
+      for (const entry of fileData.entries()) {
+      console.log(entry);
+    }
 
   try {
     setIsLoading(true);
-    const response = await fetch("/api/getDataFromImage", {
+    const response = await fetch("/api/uploadImages", {
       method: "POST",
       body: fileData,
     });
 
     if (response.ok) {
       const data = await response.json();
-      console.log("data: ", data.data, "doc: ", data.doc);
-      setData(data.doc);
+      console.log("response: ", data);
+      setImageIds(data.ids);
       setIsLoading(false);
       // trigger(fileData);
       formElement.reset();
     }
+
+    // setIsLoading(true);
+    // const response = await fetch("/api/getDataFromImage", {
+    //   method: "POST",
+    //   body: fileData,
+    // });
+
+    // if (response.ok) {
+    //   const data = await response.json();
+    //   console.log("data: ", data.data, "doc: ", data.doc);
+    //   setData(data.doc);
+    //   setIsLoading(false);
+    //   // trigger(fileData);
+    //   formElement.reset();
+    // }
   } catch (error) {
     console.error("Error: ", error);
   }

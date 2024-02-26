@@ -1,7 +1,7 @@
 const nextConfig = {
   experimental: {
     serverActions: {
-      bodySizeLimit: '4mb',
+      bodySizeLimit: "4mb",
     },
   },
   reactStrictMode: true,
@@ -9,6 +9,7 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
+    domains: ["res.cloudinary.com"],
     remotePatterns: [
       {
         protocol: "https",

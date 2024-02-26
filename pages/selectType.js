@@ -12,22 +12,22 @@ export default function SelectType({ params }) {
       <h2 className={styles.title}>What kind of sheet music do you have?</h2>
       <div className={styles.grid}>
         <a href="/upload/printedPublication" className={styles.card}>
-          <h3>Print publication &rarr;</h3>
-          <p>A printed book containing multiple pieces of music.</p>
+          <h3>Print publication</h3>
         </a>
+          <p>A printed book containing multiple pieces of music.</p>
 
         <a href="/upload/singleSheet" className={styles.card}>
-          <h3>Single sheet &rarr;</h3>
-          <p>A single printed piece of sheet music.</p>
+          <h3>Single sheet</h3>
         </a>
+          <p>A single printed piece of sheet music.</p>
 
         <a
           href="/upload/downloadCopy"
           className={styles.card}
         >
-          <h3>Download copy &rarr;</h3>
-          <p>A piece of sheet music downloaded from a website.</p>
+          <h3>Download copy</h3>
         </a>
+          <p>A piece of sheet music downloaded from a website.</p>
 
       </div>
       <style jsx global>{`

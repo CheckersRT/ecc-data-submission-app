@@ -5,7 +5,7 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-export default async function uploadToCloudinary(images) {
+export default async function uploadToCloudinary(image) {
   // Use the uploaded file's name as the asset's public ID and
   // allow overwriting the asset with new versions
   const options = {
@@ -17,7 +17,7 @@ export default async function uploadToCloudinary(images) {
 
   try {
     // Upload the track
-    const result = await cloudinary.v2.uploader.upload(images, options);
+    const result = await cloudinary.v2.uploader.upload(image, options);
     console.log("Result cloudinary upload: ", result);
     return result;
   } catch (error) {
