@@ -3,7 +3,6 @@ import ImageComponent from "../ImageComponent/ImageComponent";
 import styled from "styled-components"
 
 export default function ImageList({images}) {
-    // const {data: images, error, isLoading} = useSWR("/api/image")
 
     // console.log(images, error, isLoading)
 

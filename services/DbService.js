@@ -16,6 +16,20 @@ export const DbService = {
     return images;
   },
 
+  async getImagesById(ids) {
+    await connectMongo();
+
+    const imageArray = []
+
+    for (let i = 0; i < ids.length; i++) {
+      const image = await Image.findById(ids[i])
+      imageArray.push(image)
+    }
+
+    return imageArray
+
+  },
+
   async createImage({ originalFilename, size, mimetype, binaryData, url }) {
     await connectMongo();
     console.log("url in createImage: ", url)

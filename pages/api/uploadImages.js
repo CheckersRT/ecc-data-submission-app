@@ -32,11 +32,17 @@ export default async function handler(request, response) {
         const imageSavePromises = images.map(async (image) => {
           console.log("image: ", image.filepath);
 
+          // read filecontent and convert to base64 string
           const fileContent = await fs.readFile(image.filepath);
+          // const base64string = fileContent.toString("base64");
+          const base64string = "";
 
-          const base64string = fileContent.toString("base64");
+          // upload to cloudinary 
+          const {secure_url: url} = await uploadToCloudinary(image.filepath)
+          console.log("cloudinary url: ", url)
 
-          const imageDbObject = await createImageDbObject(image, base64string);
+          // create dbobject and return _id
+          const imageDbObject = await createImageDbObject(image, base64string, url);
           const { _id } = await createImage(imageDbObject);
           console.log("_id: ", _id);
           return _id;

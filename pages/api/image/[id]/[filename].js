@@ -1,6 +1,5 @@
 import connectMongo from "../../../../db/connect";
 import { Image } from "../../../../db/models/Image";
-import sharp from "sharp"
 
 export default async function handler(
     request,
@@ -12,8 +11,14 @@ export default async function handler(
 
     const image = await Image.findById(id)
 
-    response.appendHeader('Content-Type', image.mimetype)
-    response.appendHeader('Content-Length', image.size)
+    if (!image) {
+        return response.status(404).end("Image not found");
+    }
 
-    response.status(200).send(image.binaryData)
+    console.log("image in filename: ", image)
+
+    response.setHeader('Content-Type', image.mimetype)
+    response.setHeader('Content-Length', image.size)
+
+    response.end(image.binaryData)
 }

@@ -16,6 +16,7 @@ export default function imageUpload({ params }) {
   const router = useRouter()
   const dataType = router.query.dataType
 
+
   useEffect(() => {
     if (!imageIds) return;
   
@@ -30,7 +31,13 @@ export default function imageUpload({ params }) {
     }
   
     fetchImages();
+
+    
   }, [imageIds]);
+
+  function handleClick() {
+    router.push(`/upload/${dataType}/${imageIds && imageIds.join("-")}`)
+  }
 
   return (
   <div className={styles.container}>
@@ -40,11 +47,7 @@ export default function imageUpload({ params }) {
     </Head>
     <ImageUploadForm setData={setSheetMusicData} setIsLoading={setIsLoading} setImageIds={setImageIds}/>
     {images ? <ImageList images={images}/> : null}
-    {/* {sheetMusicData ?
-    <ResultsForm data={sheetMusicData} dataType={dataType}/>
-     :
-     isLoading ? <p>...loading...</p> : null } */}
-     <Link href={`/upload/${dataType}/results`}>Continue</Link>
+     <button onClick={handleClick}>Continue</button>
   </div>
   )
 }
