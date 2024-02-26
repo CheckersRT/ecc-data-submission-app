@@ -11,11 +11,11 @@ export default function results({}) {
   
   const imageIds = router.query.imageIds
   const dataType = router.query.dataType
-  const idsArray = imageIds.split("-")
   console.log("dataType: ", dataType)
   
   useEffect(() => {
-    
+    const idsArray = imageIds.split("-")
+
     async function getDataFromImage(ids) {
       setIsLoading(true);
       try {
@@ -50,7 +50,7 @@ export default function results({}) {
     }
     fetchData()
 
-  }, [])
+  }, [imageIds])
 
   // if(!data) {
   //   return <p>Loading...</p>
