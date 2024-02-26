@@ -1,4 +1,3 @@
-import styles from "../../../styles/Upload.module.css"
 import Head from "next/head"
 import ImageUploadForm from "../../../components/ImageUploadForm/ImageUploadForm"
 import { useEffect, useState } from "react"

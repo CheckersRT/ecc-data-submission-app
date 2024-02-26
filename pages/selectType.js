@@ -1,4 +1,3 @@
-import styles from "../styles/SelectType.module.css";
 import Head from "next/head";
 
 export default function SelectType({ params }) {

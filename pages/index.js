@@ -2,6 +2,9 @@ import Head from "next/head";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
+import { DM_Sans } from "next/font/google";
+
+const dm_Sans = DM_Sans({ subsets: ["latin"] });
 
 export default function Home() {
   return (
@@ -10,11 +13,6 @@ export default function Home() {
         <title>Every Copy Counts</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header>
-        <Image alt="icon" src="/icon.svg" width={24} height={24} />
-        <Image alt="icon" src="/settingsIcon.svg" width={24} height={24} />
-      </Header>
-
       <Main>
         <H1>Hello,</H1>
 
@@ -28,34 +26,18 @@ export default function Home() {
           <Image alt="arrow icon" src="/arrow.svg" width={24} height={24} />
         </Button>
       </Main>
-
-      {/* <footer>
-        <a
-          href="https://www.everycopycounts.co.uk"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Every Copy Counts
-        </a>
-      </footer> */}
     </Container>
   );
 }
 
 const Container = styled.div`
-  margin: auto;
-  width: 345px;
+  width: 100%;
+  padding: 16px 24px;
   position: relative;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: ${dm_Sans.style.fontFamily};
 `;
 
-const Header = styled.div`
-  height: 56px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+
 
 const Main = styled.main`
 display: flex;
@@ -65,22 +47,24 @@ gap: 20px;
 `
 
 const H1 = styled.h1`
-font-size: 3rem;
+font-size: 2.5rem;
+font-weight: 400;
 `
 
 const P = styled.p`
-font-size: 1.5rem;
+font-size: 1.7rem;
 line-height: 1.5;
+text-transform: uppercase;
 `
 
 const Button = styled.button`
   align-self: end;
-  width: 160px;
+  width: 180px;
   appearance: none;
   text-decoration: none;
   background-color: black;
   padding: 12px;
-  border-radius: 22px;
+  border-radius: 26px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -90,7 +74,8 @@ const Button = styled.button`
 const StyledLink = styled(Link)`
   color: white;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.3rem;
+
 
   &:visited {
     text-decoration: none;
