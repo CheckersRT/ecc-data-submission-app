@@ -4,6 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ImageList from "../../../components/ImageList/ImageList";
 import styled from "styled-components";
+import Image from "next/image";
+import { DM_Sans } from "next/font/google";
+import ForwardButton from "../../../components/ForwardButton/ForwardButton";
+import BackButton from "../../../components/BackButton/BackButton";
+import ForBackNav from "../../../components/ForBackNav/ForBackNav";
+
+
+const dm_Sans = DM_Sans({ subsets: ["latin"] });
 
 export default function imageUpload({ params }) {
   const [sheetMusicData, setSheetMusicData] = useState();
@@ -13,6 +21,7 @@ export default function imageUpload({ params }) {
 
   const router = useRouter();
   const dataType = router.query.dataType;
+  const pathname = router.pathname
 
   useEffect(() => {
     if (!imageIds) return;
@@ -31,28 +40,32 @@ export default function imageUpload({ params }) {
   }, [imageIds]);
 
   function handleClick() {
-    router.push(`/upload/${dataType}/${imageIds && imageIds.join("-")}`);
+    router.push(`/selectType/${dataType}/${imageIds && imageIds.join("-")}`);
   }
 
+
   return (
-    <Container>
-      <H1>Upload photos</H1>
-      <Regular16>
-        You only need 3 images: the front, the back, and the first page. See
-        photo tips.
-      </Regular16>
-      <ImageUploadForm
-        setData={setSheetMusicData}
-        setIsLoading={setIsLoading}
-        setImageIds={setImageIds}
-      />
-      {images && <ImageList images={images} />}
-      {images && <StyledButton onClick={handleClick}>Continue</StyledButton>}
-    </Container>
+    <>
+      <UploadContainer>
+        <H1>Upload photos</H1>
+        <Regular16>
+          You only need 3 images: the front, the back, and the first page. See
+          photo tips.
+        </Regular16>
+        <ImageUploadForm
+          setData={setSheetMusicData}
+          setIsLoading={setIsLoading}
+          setImageIds={setImageIds}
+          isLoading={isLoading}
+        />
+      </UploadContainer>
+      {images && <ImageList images={images}/>}
+      <ForBackNav text={"Continue"} onClick={handleClick} forButton={images ? true : false}/>
+    </>
   );
 }
 
-const Container = styled.div`
+const UploadContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,4 +89,3 @@ const Regular16 = styled.p`
   line-height: 1.5;
 `;
 
-const StyledButton = styled.button``;

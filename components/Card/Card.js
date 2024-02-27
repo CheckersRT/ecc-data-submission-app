@@ -14,12 +14,18 @@ export default function Card({ icon, title, description }) {
 }
 
 const Container = styled.div`
-  border: 0.5px solid gray;
+  box-sizing: border-box;
+  border: 0.5px solid #4e5056;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   padding: 16px 24px;
   gap: 0.3rem;
+
+  &:hover, :active {
+    background-color: #f2f2f2;
+    // border: 1px solid #4e5056;
+  }
 `;
 
 const UpperRow = styled.div`

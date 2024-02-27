@@ -3,10 +3,6 @@ import ImageComponent from "../ImageComponent/ImageComponent";
 import styled from "styled-components"
 
 export default function ImageList({images}) {
-
-    // console.log(images, error, isLoading)
-
-    console.log(images ? images : null)
   return (
     <Container>
       {images && images.map((image) => (
@@ -19,6 +15,5 @@ export default function ImageList({images}) {
 const Container = styled.div`
   display: flex;
   justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 10px;
+  gap: 0.5rem;
 `

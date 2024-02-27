@@ -23,6 +23,7 @@ const StyledHeader = styled(Header)`
 `;
 
 const Container = styled.div`
+box-sizing: border-box;
   display: flex;
   margin: auto;
   max-width: 60rem;
