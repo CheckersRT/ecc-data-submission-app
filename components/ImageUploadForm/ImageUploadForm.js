@@ -8,11 +8,7 @@ export default function ImageUploadForm({ setData, setIsLoading, setImageIds }) 
 
   return (
     <>
-      <h2>Upload images</h2>
-      <p>
-        You only need 3 images: the front, the back, and the first page. See
-        photo tips.
-      </p>
+
       <form
         onSubmit={(event) =>
           onSubmit(event, fileData, trigger, setData, setIsLoading, setImageIds)

@@ -52,9 +52,6 @@ export default function results({}) {
 
   }, [imageIds])
 
-  // if(!data) {
-  //   return <p>Loading...</p>
-  // }
   
   return (
     <>{isLoading && <p>...loading</p>}

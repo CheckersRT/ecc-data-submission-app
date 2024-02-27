@@ -14,8 +14,9 @@ export default function MyApp({ Component, pageProps }) {
           font-family: ${dm_Sans.style.fontFamily};
         }
       `}</style>
-      <Layout/>
+      <Layout>
         <Component {...pageProps} />
+      </Layout>
     </SWRConfig>
   );
 }

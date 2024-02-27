@@ -1,47 +1,61 @@
 import Head from "next/head";
+import styled from "styled-components";
+import Card from "../components/Card/Card";
+import Link from "next/link";
 
 export default function SelectType({ params }) {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Select Type</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h2 className={styles.title}>What kind of sheet music do you have?</h2>
-      <div className={styles.grid}>
-        <a href="/upload/printedPublication" className={styles.card}>
-          <h3>Print publication</h3>
-        </a>
-          <p>A printed book containing multiple pieces of music.</p>
-
-        <a href="/upload/singleSheet" className={styles.card}>
-          <h3>Single sheet</h3>
-        </a>
-          <p>A single printed piece of sheet music.</p>
-
-        <a
-          href="/upload/downloadCopy"
-          className={styles.card}
-        >
-          <h3>Download copy</h3>
-        </a>
-          <p>A piece of sheet music downloaded from a website.</p>
-
-      </div>
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
+      <H1>What kind of sheet music do you have?</H1>
+      <Container>
+        <StyledLink href="/upload/printedPublication">
+          <Card
+            title={"Print publication"}
+            description={"A printed book containing multiple pieces."}
+            icon={"/printer.svg"}
+          />
+        </StyledLink>
+        <StyledLink href="/upload/singleSheet">
+          <Card
+            title={"Single sheet"}
+            description={"A single printed piece of sheet music."}
+            icon={"/singleSheet.svg"}
+          />
+        </StyledLink>
+        <StyledLink href="/upload/downloadCopy">
+          <Card
+            title={"Download copy"}
+            description={"Sheet music downloaded from a website."}
+            icon={"/download.svg"}
+          />
+        </StyledLink>
+      </Container>
     </div>
   );
 }
+
+const Container = styled.div`
+padding-top: 1rem;
+display: flex;
+flex-direction: column;
+gap: 1rem;
+`
+
+const H1 = styled.h1`
+  font-size: 2.1rem;
+  font-weight: 400;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+
+  &:visited {
+    text-decoration: none;
+    color: black;
+  }
+`;

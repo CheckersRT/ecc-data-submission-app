@@ -1,23 +1,32 @@
 import styled from "styled-components";
 import Image from "next/image";
+import Header from "./Header";
 
 export default function Layout({ children }) {
   return (
     <>
-    <Header>
-      <Image alt="icon" src="/icon.svg" width={24} height={24} />
-      <Image alt="icon" src="/settingsIcon.svg" width={24} height={24} />
-    </Header>
-      <main>{children}</main>
+      <StyledHeader>
+        <Header />
+      </StyledHeader>
+      <Container>{children}</Container>
     </>
   );
 }
 
-const Header = styled.div`
-    margin: auto;
+const StyledHeader = styled(Header)`
+  margin: auto;
   height: 56px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const Container = styled.div`
+  display: flex;
+  margin: auto;
+  max-width: 60rem;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  gap: 1rem;
 `;

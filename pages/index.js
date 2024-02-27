@@ -8,7 +8,7 @@ const dm_Sans = DM_Sans({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <Container>
+    <>
       <Head>
         <title>Every Copy Counts</title>
         <link rel="icon" href="/favicon.ico" />
@@ -26,36 +26,28 @@ export default function Home() {
           <Image alt="arrow icon" src="/arrow.svg" width={24} height={24} />
         </Button>
       </Main>
-    </Container>
+    </>
   );
 }
 
-const Container = styled.div`
-  width: 100%;
-  padding: 16px 24px;
-  position: relative;
-  font-family: ${dm_Sans.style.fontFamily};
+const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
 `;
 
-
-
-const Main = styled.main`
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-gap: 20px;
-`
-
 const H1 = styled.h1`
-font-size: 2.5rem;
-font-weight: 400;
-`
+  font-size: 2.1rem;
+  font-weight: 400;
+`;
 
 const P = styled.p`
-font-size: 1.7rem;
-line-height: 1.5;
-text-transform: uppercase;
-`
+  font-size: 1.6rem;
+  line-height: 1.7;
+  text-transform: uppercase;
+  font-weight: 300;
+`;
 
 const Button = styled.button`
   align-self: end;
@@ -76,9 +68,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   font-size: 1.3rem;
 
-
   &:visited {
     text-decoration: none;
   }
-
 `;
