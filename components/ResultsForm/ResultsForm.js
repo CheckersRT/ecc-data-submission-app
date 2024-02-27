@@ -1,5 +1,7 @@
 import { dataTypes } from "./typeArrays";
 import { useRouter } from "next/router";
+import styled from "styled-components";
+import DataField from "../DataField/DataField";
 
 
 export default function ResultsForm({ data, dataType, setData }) {
@@ -29,26 +31,35 @@ export default function ResultsForm({ data, dataType, setData }) {
 
   return (
     <>
-    <h2>Data extracted 🚀</h2>
-    <p>Check and edit the results before hitting ‘submit’:</p>
+    <H1>Data extracted 🚀</H1>
+    <Regular16>Check and edit the results before hitting ‘submit’:</Regular16>
       {data && (
-        <form onSubmit={handleSubmit}>
-          <h2>Data</h2>
-
+        <Results onSubmit={handleSubmit}>
           {dataFields.map((field) => (
-            <div key={field.key}>
-              <label htmlFor={field.key}>{field.name}</label>
-              <input
-                type="text"
-                id={field.key}
-                defaultValue={data[field.key]}
-                name={field.key}
-              ></input>
-            </div>
+            <DataField field={field} data={data}/>
           ))}
           <button type="submit">Submit</button>
-        </form>
+        </Results>
       )}
     </>
   );
 }
+
+const H1 = styled.h1`
+  font-size: 2.1rem;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+`;
+
+
+const Results = styled.form`
+
+`
+
+const Regular16 = styled.p`
+  font-size: 1rem;
+  font-weight: 300;
+  margin: 0;
+  line-height: 1.5;
+`;

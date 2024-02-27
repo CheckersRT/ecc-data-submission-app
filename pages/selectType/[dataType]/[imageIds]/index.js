@@ -1,43 +1,44 @@
 import ResultsForm from "../../../../components/ResultsForm/ResultsForm";
-import { useRouter } from 'next/router'
-import { useEffect, useState } from "react"
-
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Loading from "../../../../components/Loading/Loading";
 
 export default function results({}) {
-  const [data, setData] = useState()
-  const [isLoading, setIsLoading] = useState(false)
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter()
-  
-  const imageIds = router.query.imageIds
-  const dataType = router.query.dataType
-  console.log("dataType: ", dataType)
-  
+  const router = useRouter();
+
+  const imageIds = router.query.imageIds;
+  const dataType = router.query.dataType;
+  console.log("dataType: ", dataType);
+
   useEffect(() => {
-    const idsArray = imageIds.split("-")
+    if (!imageIds) return;
+
+    const idsArray = imageIds.split("-");
 
     async function getDataFromImage(ids) {
       setIsLoading(true);
       try {
-     const response = await fetch("/api/getDataFromImage2", {
-      method: "POST",
-      body: JSON.stringify({ids: ids}),
-      headers: {
-          "Content-Type": "application/json",
-      },
-     });
-    
-     if (response.ok) {
-       const data = await response.json();
-       console.log("data: ", data.data, "doc: ", data.doc);
-       setIsLoading(false);
-       return data.doc
-     }
-    
-     } catch (error) {
-      console.error("Error: ", error);
-      setIsLoading(false);
-     }
+        const response = await fetch("/api/getDataFromImage2", {
+          method: "POST",
+          body: JSON.stringify({ ids: ids }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("data: ", data.data, "doc: ", data.doc);
+          setIsLoading(false);
+          return data.doc;
+        }
+      } catch (error) {
+        console.error("Error: ", error);
+        setIsLoading(false);
+      }
     }
 
     async function fetchData() {
@@ -48,16 +49,15 @@ export default function results({}) {
         console.error("Error fetching data:", error);
       }
     }
-    fetchData()
+    fetchData();
+  }, [imageIds]);
 
-  }, [imageIds])
-
-  
   return (
-    <>{isLoading && <p>...loading</p>}
-      {data ? <ResultsForm  data={data} dataType={dataType} setData={setData}/> : null}
+    <>
+      {isLoading && <Loading />}
+      {data ? (
+        <ResultsForm data={data} dataType={dataType} setData={setData} />
+      ) : null}
     </>
   );
 }
-
-
