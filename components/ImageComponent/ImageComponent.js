@@ -1,5 +1,4 @@
 import Image from "next/image";
-import styles from "./ImageComponent.module.css"
 
 export default function ImageComponent({ image }) {
   // const imageLoader = ({ src, width }) => {
@@ -13,7 +12,6 @@ export default function ImageComponent({ image }) {
   console.log("image.src: ", image)
 
   return (
-    <div className={styles.imageContainer}> {/* Apply styles to the container */}
       <Image
         // loader={imageLoader}
         src={image.url}
@@ -21,6 +19,5 @@ export default function ImageComponent({ image }) {
         width={100}
         height={150}
       />
-    </div>
   );
 }
