@@ -2,7 +2,7 @@ import { dataTypes } from "./typeArrays";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import DataField from "../DataField/DataField";
-
+import ForwardButton from "../ForwardButton/ForwardButton"
 
 export default function ResultsForm({ data, dataType, setData }) {
   const router = useRouter()
@@ -25,7 +25,7 @@ export default function ResultsForm({ data, dataType, setData }) {
     console.log("Response Data:", responseData)
 
     setData()
-    router.push("/upload/submitSuccess")
+    router.push("/selectType/submitSuccess")
 
   }
 
@@ -38,7 +38,7 @@ export default function ResultsForm({ data, dataType, setData }) {
           {dataFields.map((field) => (
             <DataField field={field} data={data}/>
           ))}
-          <button type="submit">Submit</button>
+          <ForwardButton type="submit" text={"Submit data"}/>
         </Results>
       )}
     </>
@@ -54,7 +54,10 @@ const H1 = styled.h1`
 
 
 const Results = styled.form`
-
+display: flex;
+flex-direction: column;
+gap: 2rem;
+margin-top: 24px;
 `
 
 const Regular16 = styled.p`
