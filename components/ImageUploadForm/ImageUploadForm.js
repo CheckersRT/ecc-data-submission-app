@@ -65,18 +65,20 @@ const StyledLabel = styled.label`
   align-items: center;
   gap: 0.5rem;
   background-color: ${(props) =>
-    props.$isLoading ? "#F2F2F2" : "none"};
+    props.$isLoading ? "black" : "none"};
+  color: ${(props) =>
+    props.$isLoading ? "white" : "black"};
 
   &:hover,
   :active {
-    background-color: #F2F2F2;
-    // color: white;
+    background-color: black;
+    color: white;
   }
 
-  // &:hover ${StyledImage} {
-  //   filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(100deg)
-  //     brightness(104%) contrast(105%);
-  // }
+  &:hover ${StyledImage} {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(100deg)
+      brightness(104%) contrast(105%);
+  }
 `;
 
 const StyledInput = styled.input`

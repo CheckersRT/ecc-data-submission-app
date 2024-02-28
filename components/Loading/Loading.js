@@ -4,7 +4,7 @@ import styled from "styled-components";
 export default function Loading({ params }) {
   return (
     <>
-      <H1>... Loading...</H1>;
+      <H1>... doing AI...</H1>;
       <StyledImage alt="photocopier loading screen" src="/photocopier.svg" width={300} height={300}/>
     </>
   );
