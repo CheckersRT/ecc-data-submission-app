@@ -5,7 +5,7 @@ export default function DataField({ field, data }) {
     <Container key={field.key}>
       <Label htmlFor={field.key}>{field.name}</Label>
       <Input
-        type="text"
+        type={field.type}
         id={field.key}
         defaultValue={data[field.key]}
         name={field.key}
