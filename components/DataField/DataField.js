@@ -7,8 +7,9 @@ export default function DataField({ field, data }) {
       <Input
         type="text"
         id={field.key}
-        value={data[field.key]}
+        defaultValue={data[field.key]}
         name={field.key}
+        required={field.required}
       ></Input>
     </Container>
   );

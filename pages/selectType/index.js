@@ -1,8 +1,8 @@
 import Head from "next/head";
 import styled from "styled-components";
-import Card from "../components/Card/Card";
+import Card from "../../components/Card/Card";
 import Link from "next/link";
-import BackButton from "../components/BackButton/BackButton";
+import BackButton from "../../components/BackButton/BackButton";
 
 export default function SelectType({ params }) {
   return (
@@ -60,6 +60,7 @@ const H1 = styled.h1`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  color: black;
 
   &:visited {
     text-decoration: none;

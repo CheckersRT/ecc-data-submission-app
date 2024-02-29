@@ -56,7 +56,10 @@ export default function results({}) {
     <>
       {isLoading && <Loading />}
       {data ? (
+        <>
         <ResultsForm data={data} dataType={dataType} setData={setData} />
+
+        </>
       ) : null}
     </>
   );

@@ -4,7 +4,6 @@ import { DM_Sans } from "next/font/google";
 
 const dm_Sans = DM_Sans({ subsets: ["latin"] });
 
-
 export default function ForwardButton({ onClick, text }) {
   return (
     <Button onClick={onClick}>
@@ -15,9 +14,8 @@ export default function ForwardButton({ onClick, text }) {
 }
 
 const Button = styled.button`
-height: 48px;
+  height: 48px;
   align-self: end;
-  appearance: none;
   text-decoration: none;
   background-color: black;
   padding: 0 16px;
@@ -26,6 +24,7 @@ height: 48px;
   justify-content: space-around;
   align-items: center;
   gap: 0.5rem;
+  border: none;
 `;
 
 const ButtonP = styled.p`
