@@ -49,7 +49,7 @@ export default function imageUpload({ params }) {
     <>
       <UploadContainer>
         <H1>Upload photos</H1>
-        <Regular16>{dataTypes[dataType].uploadInstruction}</Regular16>
+        <Regular16>{dataType && dataTypes[dataType].uploadInstruction}</Regular16>
         <ImageUploadForm
           setData={setSheetMusicData}
           setIsLoading={setIsLoading}
