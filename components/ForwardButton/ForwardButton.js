@@ -25,6 +25,7 @@ const Button = styled.button`
   align-items: center;
   gap: 0.5rem;
   border: none;
+  outline: none;
 `;
 
 const ButtonP = styled.p`

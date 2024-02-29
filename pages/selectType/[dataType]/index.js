@@ -9,7 +9,7 @@ import { DM_Sans } from "next/font/google";
 import ForwardButton from "../../../components/ForwardButton/ForwardButton";
 import BackButton from "../../../components/BackButton/BackButton";
 import ForBackNav from "../../../components/ForBackNav/ForBackNav";
-
+import { dataTypes } from "../../../data/typeArrays";
 
 const dm_Sans = DM_Sans({ subsets: ["latin"] });
 
@@ -21,7 +21,9 @@ export default function imageUpload({ params }) {
 
   const router = useRouter();
   const dataType = router.query.dataType;
-  const pathname = router.pathname
+  const pathname = router.pathname;
+
+  console.log("datatypes: ", dataTypes[dataType])
 
   useEffect(() => {
     if (!imageIds) return;
@@ -43,15 +45,11 @@ export default function imageUpload({ params }) {
     router.push(`/selectType/${dataType}/${imageIds && imageIds.join("-")}`);
   }
 
-
   return (
     <>
       <UploadContainer>
         <H1>Upload photos</H1>
-        <Regular16>
-          You only need 3 images: the front, the back, and the first page. See
-          photo tips.
-        </Regular16>
+        <Regular16>{dataTypes[dataType].uploadInstruction}</Regular16>
         <ImageUploadForm
           setData={setSheetMusicData}
           setIsLoading={setIsLoading}
@@ -59,8 +57,12 @@ export default function imageUpload({ params }) {
           isLoading={isLoading}
         />
       </UploadContainer>
-      {images && <ImageList images={images}/>}
-      <ForBackNav text={"Continue"} onClick={handleClick} forButton={images ? true : false}/>
+      {images && <ImageList images={images} />}
+      <ForBackNav
+        text={"Continue"}
+        onClick={handleClick}
+        forButton={images ? true : false}
+      />
     </>
   );
 }
@@ -88,4 +90,3 @@ const Regular16 = styled.p`
   text-align: center;
   line-height: 1.5;
 `;
-
