@@ -21,6 +21,8 @@ export default function Home() {
           We've simplified data collection. Upload your pictures and let AI do
           the heavy lifting.
         </P>
+        <lable htmlFor="school">School name</lable>
+        <input id="school" name="school" type="text"></input>
         <Button>
           <StyledLink href="/selectType">Upload item</StyledLink>
           <Image alt="arrow icon" src="/arrow.svg" width={24} height={24} />
