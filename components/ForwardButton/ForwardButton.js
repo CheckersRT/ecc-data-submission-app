@@ -28,7 +28,7 @@ const Button = styled.button`
   outline: none;
 `;
 
-const ButtonP = styled.p`
+export const ButtonP = styled.p`
   margin: 0;
   padding: 0;
   color: white;

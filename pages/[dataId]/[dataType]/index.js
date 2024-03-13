@@ -20,6 +20,7 @@ export default function imageUpload({ params }) {
   const [images, setImages] = useState();
 
   const router = useRouter();
+  const dataId = router.query.dataId
   const dataType = router.query.dataType;
   const pathname = router.pathname;
 
@@ -42,7 +43,7 @@ export default function imageUpload({ params }) {
   }, [imageIds]);
 
   function handleClick() {
-    router.push(`/selectType/${dataType}/${imageIds && imageIds.join("-")}`);
+    router.push(`/${dataId}/${dataType}/${imageIds && imageIds.join("-")}`);
   }
 
   return (

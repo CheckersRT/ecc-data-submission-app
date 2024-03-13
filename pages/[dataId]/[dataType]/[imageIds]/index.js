@@ -9,6 +9,7 @@ export default function results({}) {
 
   const router = useRouter();
 
+  const dataId = router.query.dataId
   const imageIds = router.query.imageIds;
   const dataType = router.query.dataType;
   console.log("dataType: ", dataType);
@@ -23,7 +24,7 @@ export default function results({}) {
       try {
         const response = await fetch("/api/getDataFromImage2", {
           method: "POST",
-          body: JSON.stringify({ ids: ids }),
+          body: JSON.stringify({ imageIds: ids, dataId: dataId }),
           headers: {
             "Content-Type": "application/json",
           },

@@ -11,17 +11,17 @@ import { DbService } from "../../services/DbService";
 export default async function handler(request, response) {
   const { createData, getImagesById, updateData } = DbService;
   try {
-    const { ids } = request.body;
+    const { imageIds, dataId } = request.body;
 
-    console.log("request.body: ", ids);
+    console.log("request.body: ", imageIds, dataId);
     // perform initial save of data doc in Db, returns a promise which will await later
-    const initialDbSavePromise = createData({
-      ...initialDataDbObject,
-      images: ids,
-    });
+    // const initialDbSavePromise = createData({
+    //   ...initialDataDbObject,
+    //   images: imageIds,
+    // });
 
     // get images from database
-    const images = await getImagesById(ids);
+    const images = await getImagesById(imageIds);
 
     console.log("images from db: ", images[0].toObject(), images);
 
@@ -44,9 +44,11 @@ export default async function handler(request, response) {
       response.status(500).json({ error: "Error analysing text" });
     }
 
-    const initialDbSave = await initialDbSavePromise;
+    // const initialDbSave = await initialDbSavePromise;
 
-    const updatedDbSave = await updateData(initialDbSave._id, submissionData);
+    const updatedData = {...submissionData, images: imageIds}
+
+    const updatedDbSave = await updateData(dataId, updatedData);
 
     if (!updatedDbSave) {
       response.status(500).json({ error: "Error saving data in database" });
