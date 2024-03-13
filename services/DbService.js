@@ -47,6 +47,7 @@ export const DbService = {
   },
   async createData({
     type,
+    school,
     isOwnArrangement,
     titleOfWork,
     composerArranger,
@@ -62,6 +63,7 @@ export const DbService = {
     await connectMongo();
     const newData = new Data({
       type,
+      school,
       isOwnArrangement,
       titleOfWork,
       composerArranger,
@@ -90,6 +92,7 @@ export const DbService = {
       website,
       ISBN,
       numCopies,
+      images,
     }
   ) {
     await connectMongo();
@@ -106,6 +109,7 @@ export const DbService = {
           website: website,
           ISBN: ISBN,
           numCopies: numCopies,
+          images: images,
         },
       });
       const updatedDoc = await Data.findById(id)

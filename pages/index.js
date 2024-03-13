@@ -3,10 +3,37 @@ import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
 import { DM_Sans } from "next/font/google";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { ButtonP } from "../components/ForwardButton/ForwardButton";
 
 const dm_Sans = DM_Sans({ subsets: ["latin"] });
 
 export default function Home() {
+  const [disable, setDisable] = useState(true);
+  const [schoolName, setSchoolName] = useState();
+  const router = useRouter();
+
+  async function handleSubmit() {
+    event.preventDefault();
+    console.log("schoolname: ", schoolName);
+
+    const response = await fetch("api/initialDbSave", {
+      method: "POST",
+      body: JSON.stringify({ schoolName: schoolName }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const dataId = data.doc._id
+      console.log("id from initial save: ", dataId);
+       router.push(`/${dataId}`);
+    }
+  }
+
   return (
     <>
       <Head>
@@ -21,12 +48,27 @@ export default function Home() {
           We've simplified data collection. Upload your pictures and let AI do
           the heavy lifting.
         </P>
-        <lable htmlFor="school">School name</lable>
-        <input id="school" name="school" type="text"></input>
-        <Button>
-          <StyledLink href="/selectType">Upload item</StyledLink>
-          <Image alt="arrow icon" src="/arrow.svg" width={24} height={24} />
-        </Button>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="school">Enter your school name</label>
+          <Input
+            id="school"
+            name="school"
+            type="text"
+            onChange={(event) => {
+              setDisable(false);
+              setSchoolName(event.target.value);
+            }}
+          ></Input>
+          <Button disabled={disable ? true : false}>
+            <ButtonP>Upload item</ButtonP>
+            <StyledImage
+              alt="arrow icon"
+              src="/arrow.svg"
+              width={24}
+              height={24}
+            />
+          </Button>
+        </form>
       </Main>
     </>
   );
@@ -50,19 +92,35 @@ const P = styled.p`
   text-transform: uppercase;
   font-weight: 300;
 `;
+const StyledImage = styled(Image)``;
 
 const Button = styled.button`
   align-self: end;
   width: 180px;
   appearance: none;
   text-decoration: none;
-  background-color: black;
+  background-color: ${(props) => (props.disabled ? "#B8B8BB" : "black")};
+  border: ${(props) => (props.disabled ? "#B8B8BB" : "black")};
   padding: 12px;
   border-radius: 26px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   gap: 5px;
+
+  &:hover {
+    background-color: white;
+    border: black 1px solid;
+  }
+
+  &:hover ${ButtonP} {
+    color: black;
+  }
+
+  &:hover ${StyledImage} {
+    filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(308deg) brightness(98%)
+      contrast(101%);
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -73,4 +131,14 @@ const StyledLink = styled(Link)`
   &:visited {
     text-decoration: none;
   }
+`;
+
+const Input = styled.input`
+  box-sizing: border-box;
+  width: 100%;
+  appearance: none;
+  // border: none;
+  padding: 1.1rem;
+  border: 1px solid #79747e;
+  border-radius: 5px;
 `;

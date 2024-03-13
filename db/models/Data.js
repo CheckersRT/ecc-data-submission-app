@@ -4,6 +4,7 @@ const {Schema} = mongoose;
 
 export const dataSchema = new Schema({
     createdAt: {type: Date, default: Date.now},
+    school: {type: String, required: true},
     type: {type: String, required: false},
     isOwnArrangement: {type: Boolean, required: false},
     titleOfWork: {type: String, required: false},

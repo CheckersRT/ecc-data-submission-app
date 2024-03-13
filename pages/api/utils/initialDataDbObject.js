@@ -1,5 +1,6 @@
 export const initialDataDbObject = {
     type: "",
+    school: "",
     isOwnArrangement: false,
     titleOfWork: "",
     composerArranger: "",
