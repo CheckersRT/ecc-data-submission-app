@@ -63,7 +63,7 @@ export default function Home() {
             <ButtonP>Upload item</ButtonP>
             <StyledImage
               alt="arrow icon"
-              src="/arrow.svg"
+              src={"/arrow.svg"}
               width={24}
               height={24}
             />
@@ -107,19 +107,19 @@ const Button = styled.button`
   justify-content: space-around;
   align-items: center;
   gap: 5px;
+  margin-top: 12px;
 
   &:hover {
-    background-color: white;
-    border: black 1px solid;
+    background-color: ${(props) => (props.disabled ? null : "white")};
+    border: ${(props) => (props.disabled ? null : "black 1px solid")};
   }
 
   &:hover ${ButtonP} {
-    color: black;
+    color: ${(props) => (props.disabled ? null : "black")};
   }
 
   &:hover ${StyledImage} {
-    filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(308deg) brightness(98%)
-      contrast(101%);
+    filter: ${(props) => (props.disabled ? null : "invert(100%) sepia(100%) saturate(0%) hue-rotate(100deg) brightness(104%) contrast(105%)")}
   }
 `;
 
