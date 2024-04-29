@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
@@ -6,21 +8,24 @@ import { usePathname } from "next/navigation";
 export default function BackButton() {
   const router = useRouter();
   const pathname = usePathname();
+  console.log("pathname: ", pathname);
 
   // finds path of previous page
+if(pathname === null) return
+
   const array = pathname.split("/");
   const currentPage = array[array.length - 1];
   let parentPath = array
-    .filter((item) => {
-      return item !== currentPage;
-    })
-    .join("/");
-
+  .filter((item) => {
+    return item !== currentPage;
+  })
+  .join("/");
+  
   if (parentPath === "") {
     parentPath = "/";
   }
-
   console.log("parentpath: ", parentPath);
+
 
   function handleClick() {
     router.push(parentPath);
