@@ -1,10 +1,11 @@
 import Image from "next/image";
 import styled from "styled-components";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function BackButton() {
   const router = useRouter();
-  const pathname = router.pathname;
+  const pathname = usePathname();
 
   // finds path of previous page
   const array = pathname.split("/");
