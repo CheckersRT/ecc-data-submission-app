@@ -22,7 +22,7 @@ export default function results({}) {
     async function getDataFromImage(ids) {
       setIsLoading(true);
       try {
-        const response = await fetch("/api/getDataFromImage2", {
+        const response = await fetch("/api/getDataFromImage", {
           method: "POST",
           body: JSON.stringify({ imageIds: ids, dataId: dataId }),
           headers: {

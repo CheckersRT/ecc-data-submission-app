@@ -4,94 +4,67 @@ import callGoogleVisionAPI from "./utils/callGoogleVisionAPI";
 import callOpenAIAPI from "./utils/callOpenAIAPI";
 import saveDataAndImagesInDb from "./utils/saveDataAndImagesInDb";
 import uploadToCloudinary from "./utils/uploadToCloudinary";
-import {initialDataDbObject} from "./utils/initialDataDbObject"
-import updateDataAndImagesInDb from "./utils/updateDataAndImagesInDb"
+import { initialDataDbObject } from "./utils/initialDataDbObject";
+import updateDataAndImagesInDb from "./utils/updateDataAndImagesInDb";
+import { DbService } from "../../services/DbService";
 
 export default async function handler(request, response) {
+  const { createData, getImagesById, updateData } = DbService;
   try {
-    const form = new Formidable();
+    const { imageIds, dataId } = request.body;
 
-    form.parse(request, (error, fields, files) => {
-      if (error) {
-        console.error("Error parsing FormData:", error);
-        response.status(500).json({ error: "Error parsing FormData" });
-        return;
-      }
-      console.log("files: ", files)
-      const image = files.file;
+    console.log("request.body: ", imageIds, dataId);
+    // perform initial save of data doc in Db, returns a promise which will await later
+    // const initialDbSavePromise = createData({
+    //   ...initialDataDbObject,
+    //   images: imageIds,
+    // });
 
-      // Read the file
-      fs.readFile(image[0].filepath, async (error, fileContent) => {
-        if (error) {
-          console.error("Error reading file:", error);
-          response.status(500).json({ error: "Error reading file" });
-          return;
-        }
-        // Convert the file content to a base64 string
-        const base64string = fileContent.toString("base64");
+    // get images from database
+    const images = await getImagesById(imageIds);
 
-        try {
+    console.log("images from db: ", images[0].toObject(), images);
 
-          // create image and data doc in database immediately so something is saved
-          const initialImageDbObject = createImageDbObject(
-            image[0],
-            base64string,
-          );
-          console.log("initalImageDbObject: ", initialImageDbObject)
-          // perform initial save in Db, returns a promise which will await later
-          const initialDbSavePromise = saveDataAndImagesInDb([initialImageDbObject], initialDataDbObject)
+    // const base64string = images[0].toObject().binaryData;
+  
+    // send multiple base64strings to google Vision for text extraction
+    const extractedText = await callGoogleVisionAPI(
+      images.map((image) => image.url)
+    );
 
+    if (!extractedText) {
+      response.status(500).json({ error: "Error extracting text" });
+    }
 
-          // upload image strings to Cloudinary async, return promise (don't wait)
-          const imageDataPromise = uploadToCloudinary(image[0].filepath);
+    // send extracted text to OpenAi to get data from text
+    const submissionData = await callOpenAIAPI(extractedText);
+    console.log("Submission data: ", submissionData);
 
-          // send base64string to google Vision for text extraction
-          const extractedText = await callGoogleVisionAPI(base64string);
+    if (!submissionData) {
+      response.status(500).json({ error: "Error analysing text" });
+    }
 
-          if (!extractedText) {
-            response.status(500).json({ error: "Error extracting text" });
-          }
+    // const initialDbSave = await initialDbSavePromise;
 
-          // send extracted text to OpenAi to get data from text
-          const submissionData = await callOpenAIAPI(extractedText);
-          console.log("Submission data: ", submissionData);
+    const updatedData = {...submissionData, images: imageIds}
 
-          if (!submissionData) {
-            response.status(500).json({ error: "Error analysing text" });
-          }
+    const updatedDbSave = await updateData(dataId, updatedData);
 
-          // if uploadToCloudinary is complete...
-          const initialDbSave = await initialDbSavePromise
-          const imageData = await imageDataPromise;
+    if (!updatedDbSave) {
+      response.status(500).json({ error: "Error saving data in database" });
+    }
 
-          const updatedDbSave = await updateDataAndImagesInDb(initialDbSave._id, submissionData, imageData.secure_url)
-
-          if (!updatedDbSave) {
-            response
-              .status(500)
-              .json({ error: "Error saving data in database" });
-          }
-
-          response
-            .status(200)
-            .json({ data: submissionData, doc: updatedDbSave });
-        } catch (error) {
-          console.error("Error from getDataFromImage route:", error);
-          response
-            .status(500)
-            .json({ error: "Error from getDataFromImage route" });
-          return;
-        }
-      });
-    });
+    response.status(200).json({ data: submissionData, doc: updatedDbSave });
   } catch (error) {
-    console.error("Error: ", error);
+    console.error("Error from getDataFromImage route:", error);
+    response.status(500).json({ error: "Error from getDataFromImage route" });
+    return;
   }
 }
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 
